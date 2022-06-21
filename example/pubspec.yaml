@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  nakama:
+  flutter_nakama:
     path: ../
 
 dev_dependencies:

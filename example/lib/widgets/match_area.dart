@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nakama/nakama.dart';
-import 'package:nakama/rtapi.dart' as rt;
+import 'package:flutter_nakama/nakama.dart';
+import 'package:flutter_nakama/rtapi.dart' as rt;
 
 class MatchArea extends StatefulWidget {
   final rt.Match match;

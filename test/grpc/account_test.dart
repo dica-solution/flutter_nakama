@@ -1,6 +1,6 @@
 import 'package:faker/faker.dart';
-import 'package:nakama/api.dart' as api;
-import 'package:nakama/nakama.dart';
+import 'package:flutter_nakama/api.dart' as api;
+import 'package:flutter_nakama/nakama.dart';
 import 'package:test/test.dart';
 
 import '../config.dart';

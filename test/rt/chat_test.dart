@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:faker/faker.dart';
-import 'package:nakama/nakama.dart';
-import 'package:nakama/rtapi.dart';
+import 'package:flutter_nakama/nakama.dart';
+import 'package:flutter_nakama/rtapi.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
