@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:logging/logging.dart';
 import 'package:flutter_nakama/api.dart';
 import 'package:flutter_nakama/rtapi.dart' as rtpb;
+import 'package:logging/logging.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class NakamaWebsocketClient {

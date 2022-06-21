@@ -1,6 +1,5 @@
 import 'package:flutter_nakama/api.dart';
 import 'package:flutter_nakama/nakama.dart';
-import 'package:flutter_nakama/src/rest/apigrpc.swagger.dart';
 import 'package:flutter_nakama/src/session.dart' as model;
 
 const _kDefaultAppKey = 'default';

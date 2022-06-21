@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:flutter_nakama/api.dart' as api;
 import 'package:flutter_nakama/nakama.dart';
 import 'package:flutter_nakama/rtapi.dart' as rt;
+import 'package:logging/logging.dart';
 import 'package:simple_multiplayer_web/widgets/match_area.dart';
 import 'package:simple_multiplayer_web/widgets/matchmaker.dart';
 import 'package:simple_multiplayer_web/widgets/sign_in_box.dart';
