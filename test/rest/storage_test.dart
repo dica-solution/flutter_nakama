@@ -1,4 +1,5 @@
 import 'package:faker/faker.dart';
+import 'package:flutter_nakama/api.dart' as api;
 import 'package:flutter_nakama/nakama.dart';
 import 'package:test/test.dart';
 
@@ -37,6 +38,18 @@ void main() {
         writePermission: StorageWritePermission.ownerWrite,
         readPermission: StorageReadPermission.publicRead,
       );
+    });
+
+    test('read storage object', () async {
+      final res = await client.readStorageObject(
+        session: session,
+        collection: 'stats',
+        key: 'skills',
+        userId: session.userId,
+      );
+
+      expect(res, isA<api.StorageObject>());
+      expect(res.value, equals('{"skill": 25}'));
     });
   });
 }
