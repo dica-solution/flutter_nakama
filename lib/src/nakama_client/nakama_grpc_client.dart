@@ -299,6 +299,30 @@ class NakamaGrpcClient extends NakamaBaseClient {
   }
 
   @override
+  Future<void> updateAccount({
+    required model.Session session,
+    String? username,
+    String? displayName,
+    String? avatarUrl,
+    String? langTag,
+    String? location,
+    String? timezone,
+  }) async {
+    await _client.updateAccount(
+      UpdateAccountRequest(
+        username: username == null ? null : StringValue(value: username),
+        displayName:
+            displayName == null ? null : StringValue(value: displayName),
+        avatarUrl: avatarUrl == null ? null : StringValue(value: avatarUrl),
+        langTag: langTag == null ? null : StringValue(value: langTag),
+        location: location == null ? null : StringValue(value: location),
+        timezone: timezone == null ? null : StringValue(value: timezone),
+      ),
+      options: _getSessionCallOptions(session),
+    );
+  }
+
+  @override
   Future<Users> getUsers({
     required model.Session session,
     List<String>? facebookIds,
@@ -386,6 +410,85 @@ class NakamaGrpcClient extends NakamaBaseClient {
         forward: BoolValue(value: forward),
         cursor: cursor,
       ),
+      options: _getSessionCallOptions(session),
+    );
+  }
+
+  @override
+  Future<LeaderboardRecord> writeLeaderboardRecord({
+    required model.Session session,
+    required String leaderboardId,
+    int? score,
+    int? subscore,
+    String? metadata,
+  }) async {
+    return await _client.writeLeaderboardRecord(
+      WriteLeaderboardRecordRequest(
+        leaderboardId: leaderboardId,
+        record: WriteLeaderboardRecordRequest_LeaderboardRecordWrite(
+          score: score == null ? null : Int64(score),
+          subscore: subscore == null ? null : Int64(subscore),
+          metadata: metadata,
+        ),
+      ),
+      options: _getSessionCallOptions(session),
+    );
+  }
+
+  @override
+  Future<LeaderboardRecordList> listLeaderboardRecords({
+    required model.Session session,
+    required String leaderboardId,
+    List<String>? ownerIds,
+    int limit = 20,
+    String? cursor,
+    String? expiry,
+  }) async {
+    assert(limit > 0 && limit <= 100);
+
+    return await _client.listLeaderboardRecords(
+      ListLeaderboardRecordsRequest(
+        leaderboardId: leaderboardId,
+        ownerIds: ownerIds,
+        limit: Int32Value(value: limit),
+        cursor: cursor,
+        expiry:
+            expiry == null ? null : Int64Value(value: Int64(int.parse(expiry))),
+      ),
+      options: _getSessionCallOptions(session),
+    );
+  }
+
+  @override
+  Future<LeaderboardRecordList> listLeaderboardRecordsAroundOwner({
+    required model.Session session,
+    required String leaderboardId,
+    String? ownerId,
+    int limit = 20,
+    String? expiry,
+  }) async {
+    assert(limit > 0 && limit <= 100);
+
+    return await _client.listLeaderboardRecordsAroundOwner(
+      ListLeaderboardRecordsAroundOwnerRequest(
+        leaderboardId: leaderboardId,
+        ownerId: ownerId,
+        limit: UInt32Value(value: limit),
+        expiry:
+            expiry == null ? null : Int64Value(value: Int64(int.parse(expiry))),
+      ),
+      options: _getSessionCallOptions(session),
+    );
+  }
+
+  @override
+  Future<Rpc> rpc({
+    required model.Session session,
+    required String id,
+    String? payload,
+  }) async {
+    return await _client.rpcFunc(
+      Rpc(id: id, payload: payload),
       options: _getSessionCallOptions(session),
     );
   }

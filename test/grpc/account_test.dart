@@ -26,7 +26,11 @@ void main() {
       expect(account, isA<api.Account>());
     });
 
-    test('fetch another\'s account', () async {
+    test('updating my account', () async {
+      await client.updateAccount(session: session, displayName: 'name');
+    });
+
+    test("fetch another's account", () async {
       // create another dummy user
       final anotherUser = await client.authenticateDevice(
         deviceId: faker.guid.guid(),

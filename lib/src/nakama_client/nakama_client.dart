@@ -78,6 +78,16 @@ abstract class NakamaBaseClient {
 
   Future<Account> getAccount(model.Session session);
 
+  Future<void> updateAccount({
+    required model.Session session,
+    String? username,
+    String? displayName,
+    String? avatarUrl,
+    String? langTag,
+    String? location,
+    String? timezone,
+  });
+
   Future<Users> getUsers({
     required model.Session session,
     List<String>? facebookIds,
@@ -108,5 +118,36 @@ abstract class NakamaBaseClient {
     int limit = 20,
     bool? forward,
     String? cursor,
+  });
+
+  Future<LeaderboardRecord> writeLeaderboardRecord({
+    required model.Session session,
+    required String leaderboardId,
+    int? score,
+    int? subscore,
+    String? metadata,
+  });
+
+  Future<LeaderboardRecordList> listLeaderboardRecords({
+    required model.Session session,
+    required String leaderboardId,
+    List<String>? ownerIds,
+    int limit = 20,
+    String? cursor,
+    String? expiry,
+  });
+
+  Future<LeaderboardRecordList> listLeaderboardRecordsAroundOwner({
+    required model.Session session,
+    required String leaderboardId,
+    String? ownerId,
+    int limit = 20,
+    String? expiry,
+  });
+
+  Future<Rpc> rpc({
+    required model.Session session,
+    required String id,
+    String? payload,
   });
 }

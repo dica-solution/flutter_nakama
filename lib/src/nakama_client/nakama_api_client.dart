@@ -322,6 +322,28 @@ class NakamaRestApiClient extends NakamaBaseClient {
   }
 
   @override
+  Future<void> updateAccount({
+    required model.Session session,
+    String? username,
+    String? displayName,
+    String? avatarUrl,
+    String? langTag,
+    String? location,
+    String? timezone,
+  }) async {
+    _session = session;
+
+    await _api.nakamaUpdateAccount(
+        body: ApiUpdateAccountRequest(
+            username: username,
+            displayName: displayName,
+            avatarUrl: avatarUrl,
+            langTag: langTag,
+            location: location,
+            timezone: timezone));
+  }
+
+  @override
   Future<Users> getUsers({
     required model.Session session,
     List<String>? facebookIds,
@@ -410,5 +432,85 @@ class NakamaRestApiClient extends NakamaBaseClient {
     );
 
     return ChannelMessageList()..mergeFromProto3Json(res.body!.toJson());
+  }
+
+  @override
+  Future<LeaderboardRecord> writeLeaderboardRecord({
+    required model.Session session,
+    required String leaderboardId,
+    int? score,
+    int? subscore,
+    String? metadata,
+  }) async {
+    _session = session;
+
+    final res = await _api.nakamaWriteLeaderboardRecord(
+        leaderboardId: leaderboardId,
+        body: WriteLeaderboardRecordRequestLeaderboardRecordWrite(
+          score: score?.toString(),
+          subscore: subscore?.toString(),
+          metadata: metadata,
+        ));
+
+    return LeaderboardRecord()..mergeFromProto3Json(res.body!.toJson());
+  }
+
+  @override
+  Future<LeaderboardRecordList> listLeaderboardRecords({
+    required model.Session session,
+    required String leaderboardId,
+    List<String>? ownerIds,
+    int limit = 20,
+    String? cursor,
+    String? expiry,
+  }) async {
+    assert(limit > 0 && limit <= 100);
+
+    _session = session;
+
+    final res = await _api.nakamaListLeaderboardRecords(
+      leaderboardId: leaderboardId,
+      ownerIds: ownerIds,
+      limit: limit,
+      cursor: cursor,
+      expiry: expiry,
+    );
+
+    return LeaderboardRecordList()..mergeFromProto3Json(res.body!.toJson());
+  }
+
+  @override
+  Future<LeaderboardRecordList> listLeaderboardRecordsAroundOwner({
+    required model.Session session,
+    required String leaderboardId,
+    String? ownerId,
+    int limit = 20,
+    String? expiry,
+  }) async {
+    assert(limit > 0 && limit <= 100);
+
+    _session = session;
+
+    final res = await _api.nakamaListLeaderboardRecordsAroundOwner(
+      leaderboardId: leaderboardId,
+      ownerId: ownerId,
+      limit: limit,
+      expiry: expiry,
+    );
+
+    return LeaderboardRecordList()..mergeFromProto3Json(res.body!.toJson());
+  }
+
+  @override
+  Future<Rpc> rpc({
+    required model.Session session,
+    required String id,
+    String? payload,
+  }) async {
+    _session = session;
+
+    final res = await _api.nakamaRpcFunc(id: id, body: payload);
+
+    return Rpc()..mergeFromProto3Json(res.body!.toJson());
   }
 }

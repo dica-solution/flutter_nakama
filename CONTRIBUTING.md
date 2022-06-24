@@ -9,3 +9,8 @@
 
 * Use the dart formatting which is already preconfigured here!
 * Start your git commit message with an uppercase letter and complete a sentence like "If you install this commit, it ..."
+
+## Run
+
+* `dart format --output=none --set-exit-if-changed .`
+* `dart analyze`
