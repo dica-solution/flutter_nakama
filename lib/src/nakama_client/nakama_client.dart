@@ -150,4 +150,12 @@ abstract class NakamaBaseClient {
     required String id,
     String? payload,
   });
+
+  Future<StorageObjectList> listStorageObjects({
+    required model.Session session,
+    String? collection,
+    String? cursor,
+    String? userId,
+    int? limit,
+  });
 }
