@@ -158,4 +158,9 @@ abstract class NakamaBaseClient {
     String? userId,
     int? limit,
   });
+
+  Future<model.Session> sessionRefresh({
+    required model.Session session,
+    Map<String, String>? vars,
+  });
 }

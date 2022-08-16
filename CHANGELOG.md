@@ -1,3 +1,6 @@
+## 0.1.5
+* Add `sessionRefreshMethod`
+
 ## 0.1.3
 * Clarify release intent
 
