@@ -1,3 +1,6 @@
+## 0.2.0
+* Add Link/Unlink Device
+
 ## 0.1.5
 * Add `sessionRefreshMethod`
 
