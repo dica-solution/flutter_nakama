@@ -55,5 +55,35 @@ void main() {
       expect(newSession.token, isNot(equals(session.token)));
       expect(newSession.expiresAt, greaterThan(session.expiresAt));
     });
+
+    test('link device', () async {
+      final session = await client.authenticateEmail(
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+        create: true,
+      );
+
+      await client.linkDevice(session: session, id: faker.guid.guid());
+
+      final account = await client.getAccount(session);
+
+      expect(account.devices.length, 1);
+    });
+
+    test('unlink device', () async {
+      final session = await client.authenticateEmail(
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+        create: true,
+      );
+
+      final deviceId = faker.guid.guid();
+      await client.linkDevice(session: session, id: deviceId);
+      await client.unlinkDevice(session: session, id: deviceId);
+
+      final account = await client.getAccount(session);
+
+      expect(account.devices.length, 0);
+    });
   });
 }

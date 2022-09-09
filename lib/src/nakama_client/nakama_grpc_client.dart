@@ -528,4 +528,34 @@ class NakamaGrpcClient extends NakamaBaseClient {
       refreshToken: res.refreshToken,
     );
   }
+
+  @override
+  Future<void> linkDevice({
+    required model.Session session,
+    String? id,
+    Map<String, String>? vars,
+  }) async {
+    await _client.linkDevice(
+      AccountDevice(
+        id: id,
+        vars: vars,
+      ),
+      options: _getSessionCallOptions(session),
+    );
+  }
+
+  @override
+  Future<void> unlinkDevice({
+    required model.Session session,
+    String? id,
+    Map<String, String>? vars,
+  }) async {
+    await _client.unlinkDevice(
+      AccountDevice(
+        id: id,
+        vars: vars,
+      ),
+      options: _getSessionCallOptions(session),
+    );
+  }
 }

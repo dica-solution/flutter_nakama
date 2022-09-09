@@ -552,4 +552,36 @@ class NakamaRestApiClient extends NakamaBaseClient {
       refreshToken: data.refreshToken,
     );
   }
+
+  @override
+  Future<void> linkDevice({
+    required model.Session session,
+    String? id,
+    Map<String, String>? vars,
+  }) async {
+    _session = session;
+
+    await _api.nakamaLinkDevice(
+      body: ApiAccountDevice(
+        id: id,
+        vars: vars,
+      ),
+    );
+  }
+
+  @override
+  Future<void> unlinkDevice({
+    required model.Session session,
+    String? id,
+    Map<String, String>? vars,
+  }) async {
+    _session = session;
+
+    await _api.nakamaUnlinkDevice(
+      body: ApiAccountDevice(
+        id: id,
+        vars: vars,
+      ),
+    );
+  }
 }
