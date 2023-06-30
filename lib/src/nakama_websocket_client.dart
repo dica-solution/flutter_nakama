@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_nakama/api.dart';
 import 'package:flutter_nakama/rtapi.dart' as rtpb;
 import 'package:logging/logging.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
 
 class NakamaWebsocketClient {
   static final _log = Logger('NakamaWebsocketClient');
@@ -23,7 +23,9 @@ class NakamaWebsocketClient {
   final void Function()? onDone;
   final void Function(dynamic error)? onError;
 
-  late final WebSocketChannel _channel;
+  final void Function()? onDisconnect;
+
+  late final IOWebSocketChannel _channel;
 
   final _onChannelPresenceController =
       StreamController<rtpb.ChannelPresenceEvent>.broadcast();
@@ -99,6 +101,7 @@ class NakamaWebsocketClient {
     required String token,
     Function()? onDone,
     Function(dynamic error)? onError,
+    Function()? onDisconnect,
   }) {
     // Has the client already been initialized? Then return it.
     if (_clients.containsKey(key)) {
@@ -107,13 +110,13 @@ class NakamaWebsocketClient {
 
     // Create new and return instance of this.
     return _clients[key] = NakamaWebsocketClient._(
-      host: host,
-      port: port,
-      ssl: ssl,
-      token: token,
-      onDone: onDone,
-      onError: onError,
-    );
+        host: host,
+        port: port,
+        ssl: ssl,
+        token: token,
+        onDone: onDone,
+        onError: onError,
+        onDisconnect: onDisconnect);
   }
 
   NakamaWebsocketClient._({
@@ -123,6 +126,7 @@ class NakamaWebsocketClient {
     required this.token,
     this.onDone,
     this.onError,
+    this.onDisconnect,
   }) {
     _log.info('Connecting ${ssl ? 'WSS' : 'WS'} to $host:$port');
     _log.info('Using token $token');
@@ -136,14 +140,17 @@ class NakamaWebsocketClient {
         'format': 'protobuf',
       },
     );
-    _channel = WebSocketChannel.connect(uri);
+    _channel = IOWebSocketChannel.connect(uri,
+        pingInterval: const Duration(seconds: 2));
     _log.info('connected');
 
     _channel.stream.listen(
       _onData,
       onDone: () {
         _clients.clear();
-
+        if (_channel.closeReason == 'goingAway') {
+          onDisconnect?.call();
+        }
         if (onDone != null) {
           onDone!();
         }
