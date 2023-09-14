@@ -65,7 +65,7 @@ class NakamaRestApiClient extends NakamaBaseClient {
         host: host,
         scheme: ssl ? 'https' : 'http',
         port: port,
-      ).toString(),
+      ),
       services: [Apigrpc.create()],
       interceptors: [
         // Auth Interceptor
